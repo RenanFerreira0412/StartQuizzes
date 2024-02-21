@@ -1,0 +1,6 @@
+# pasta backend
+backend/.env
+backend/venv
+
+# pasta frontend
+frontend/node_modules

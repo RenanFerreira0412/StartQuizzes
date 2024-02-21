@@ -1,0 +1,40 @@
+.form-group,
+.auth-ui,
+.auth-ui-container,
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-ui {
+  align-items: center;
+  text-align: center;
+  height: 100vh;
+  gap: 30px;
+}
+
+.auth-ui-container {
+  width: 80%;
+  max-width: 600px;
+  gap: 20px;
+}
+
+.form-group {
+  gap: 10px;
+  text-align: start;
+}
+
+form {
+  gap: 20px;
+}
+
+button {
+  border: 0;
+  padding: 5px;
+}
+
+input {
+  margin: 0;
+  padding: 10px;
+}
