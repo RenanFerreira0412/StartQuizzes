@@ -1,6 +1,6 @@
 from config import Config
-from src.services.database.tables.users import UsersTable
-from src.services.database.tables.quizzes import QuizzesTable
+from src.services.database.tables.users_tb import UsersTable
+from src.services.database.tables.quizzes_tb import QuizzesTable
 
 
 class Database:
@@ -11,6 +11,5 @@ class Database:
     conn = Config.get_db_connection()
 
     # referência as tabelas do banco de dados
-
     users = UsersTable(conn)
     quizzes = QuizzesTable(conn)

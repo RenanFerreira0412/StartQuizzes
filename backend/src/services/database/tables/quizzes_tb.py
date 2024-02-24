@@ -20,6 +20,9 @@ class QuizzesTable:
             pass
         except psycopg2.Error as e:
             print(f'Erro: {e}')
+        finally:
+            # Encerra o cursor após a execução da operação
+            self.cur.close()
 
     # encontrar
     def find(self):
@@ -27,6 +30,9 @@ class QuizzesTable:
             pass
         except psycopg2.Error as e:
             print(f'Erro: {e}')
+        finally:
+            # Encerra o cursor após a execução da operação
+            self.cur.close()
 
     # atualizar
     def updateOne(self, id):
@@ -34,6 +40,9 @@ class QuizzesTable:
             pass
         except psycopg2.Error as e:
             print(f'Erro: {e}')
+        finally:
+            # Encerra o cursor após a execução da operação
+            self.cur.close()
 
     # deletar
     def deleteOne(self, id):
@@ -41,3 +50,6 @@ class QuizzesTable:
             pass
         except psycopg2.Error as e:
             print(f'Erro: {e}')
+        finally:
+            # Encerra o cursor após a execução da operação
+            self.cur.close()

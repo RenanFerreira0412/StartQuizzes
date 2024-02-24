@@ -2,7 +2,7 @@ from dotenv import dotenv_values
 import psycopg2
 
 
-class Config:
+class Config(object):
     """
     Confihuração com o banco de dados
     """
