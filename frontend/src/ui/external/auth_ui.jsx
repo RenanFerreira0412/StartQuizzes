@@ -1,64 +1,70 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import LoginForm from "./components/login_form";
 import RegistrationForm from "./components/registration_form";
 import ForgotPasswordForm from "./components/forgot_password_form";
 
-function AuthUI() {
-  // controlar as telas de autenticação
-  const [isLogin, setIsLogin] = useState(true);
-  // controlar a tela de esqueceu sua senha
-  const [isForgotPassword, setIsForgotPassword] = useState(false);
-
-  var formulary, title, toggleButton;
-
-  // controlando o conteúdo da página de autenticação
-  if (isLogin) {
-    if (isForgotPassword) {
-      title = "Recuperar senha";
-      toggleButton = "Voltar";
-      formulary = <ForgotPasswordForm />;
-    } else {
-      title = "Olá, bem-vindo!";
-      toggleButton = "Ainda não tem conta? Cadastre-se agora!";
-      formulary = <LoginForm />;
-    }
-  } else {
-    title = "Crie uma conta";
-    toggleButton = "Já possui uma conta? Entrar";
-    formulary = <RegistrationForm />;
+class AuthUI extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogin: true,
+      isForgotPassword: false,
+    };
   }
 
-  return (
-    <>
-      <div className="auth-ui">
-        <p className="auth-ui-title">StartQuizzes</p>
-        <div className="auth-ui-container">
-          {title}
+  render() {
+    const { isLogin, isForgotPassword } = this.state;
+    let title, toggleButton, formulary;
 
-          <button
-            className="toggleButton"
-            onClick={() =>
-              isForgotPassword
-                ? setIsForgotPassword(!isForgotPassword)
-                : setIsLogin(!isLogin)
-            }
-          >
-            {toggleButton}
-          </button>
+    if (isLogin) {
+      if (isForgotPassword) {
+        title = "Recuperar senha";
+        toggleButton = "Voltar";
+        formulary = <ForgotPasswordForm />;
+      } else {
+        title = "Olá, bem-vindo!";
+        toggleButton = "Ainda não tem conta? Cadastre-se agora!";
+        formulary = <LoginForm />;
+      }
+    } else {
+      title = "Crie uma conta";
+      toggleButton = "Já possui uma conta? Entrar";
+      formulary = <RegistrationForm />;
+    }
+
+    return (
+      <div className="auth-ui">
+        <div className="auth-ui-container">
+          <p>{title}</p>
+
           {formulary}
 
           {!isForgotPassword && isLogin && (
             <button
               className="forgot-password-btn"
-              onClick={() => setIsForgotPassword(!isForgotPassword)}
+              onClick={() =>
+                this.setState({ isForgotPassword: !isForgotPassword })
+              }
             >
               Esqueceu sua senha?
             </button>
           )}
         </div>
+        <div className="auth-ui-container">
+          <button
+            className="toggleButton"
+            onClick={() =>
+              isForgotPassword
+                ? this.setState({ isForgotPassword: !isForgotPassword })
+                : this.setState({ isLogin: !isLogin })
+            }
+          >
+            {toggleButton}
+          </button>
+        </div>
       </div>
-    </>
-  );
+    );
+  }
 }
 
 export default AuthUI;

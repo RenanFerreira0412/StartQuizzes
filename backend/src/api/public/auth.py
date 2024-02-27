@@ -15,13 +15,10 @@ def login():
     # recebendo os dados
     data = request.get_json()
 
-    is_authenticated = auth_service.signInWithEmailAndPassword(
+    response = auth_service.signInWithEmailAndPassword(
         data['email'], data['password'])
 
-    if is_authenticated:
-        return jsonify({"message": "Bem vindo de volta."}), 200
-
-    return jsonify({"message": "E-mail ou senha inválidos."}), 404
+    return jsonify({"message": response['message'], "data": response['data']}), response['status']
 
 
 @auth_bp.route("/api/v1/app/cadastro", methods=["POST"])
@@ -33,13 +30,10 @@ def register():
     # recebendo os dados
     data = request.get_json()
 
-    is_created = auth_service.createUserWithEmailAndPassword(
+    response = auth_service.createUserWithEmailAndPassword(
         data['name'], data['email'], data['password'])
 
-    if is_created:
-        return jsonify({"message": "Usuário cadastrado com sucesso!"}), 200
-
-    return jsonify({"message": "Este endereço de email já existe!"}), 404
+    return jsonify({"message": response["message"], "data": response["data"]}), response["status"]
 
 
 @auth_bp.route("/api/v1/app/redefinirsenha", methods=["POST"])
@@ -50,24 +44,22 @@ def reset_password():
 
     data = request.get_json()
 
-    is_reset = auth_service.resetPassword(data['email'], data['password'])
+    response = auth_service.resetPassword(data['email'], data['password'])
 
-    if is_reset:
-        return jsonify({"message": "Sua senha foi atualizada com sucesso! Realize novamente o seu login."}), 200
-
-    return jsonify({"message": "Este endereço de email não foi encontrado."}), 404
+    return jsonify({"message": response["message"], "data": response["data"]}), response["status"]
 
 
 @auth_bp.route("/api/v1/usuarioatual", methods=["GET"])
-def get_current_user():
+def get_active_users():
     """
-    realizando o processo de verificação do usuário atual, ou seja, o usuário que está logado
+    realizando o processo de verificação dos usuário ativos no app
     """
 
     # usuário atual
-    user_data = auth_service.getCurrentUser()
-    currentUser = User(*user_data)
+    response = auth_service.getActiveUsers()
+    active_users = [User(*data).toDict() for data in response["data"]]
 
     # convertendo para json
-    response = json.dumps(currentUser.__dict__)
-    return Response(response, mimetype="application/json")
+    res = json.dumps(active_users)
+
+    return Response(res, mimetype="application/json")

@@ -18,11 +18,19 @@ form {
   width: 80%;
   max-width: 600px;
   gap: 20px;
+  padding: 20px;
+  background-color: #fafafa;
+  border: solid 1px #bdbdbd;
 }
 
 .form-group {
   gap: 10px;
   text-align: start;
+}
+
+.error-card {
+  background-color: #e57373;
+  padding: 16px;
 }
 
 form {
@@ -37,4 +45,5 @@ button {
 input {
   margin: 0;
   padding: 10px;
+  border: solid 1px #bbdefb;
 }

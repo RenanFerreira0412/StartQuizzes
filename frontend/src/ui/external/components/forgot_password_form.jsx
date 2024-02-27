@@ -1,67 +1,80 @@
-import React from "react";
+import React, {useState} from "react";
 import Editor from "../../../components/editor";
 import PrimaryButton from "../../../components/primary_button";
+import ErrorCard from "../widgets/error_card";
+import Constants from "../../../api/constants";
 
-class ForgotPasswordForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    };
+const ForgotPasswordForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  const url = `${Constants.base_url}${Constants.reset_password}`;
 
-  handleChange(event) {
-    // valor do campo de texto
-    const value = event.target.value;
+  const handleForgotPassword = async (e) => {
+    e.preventDefault();
 
-    // valor do atributo name
-    const name = event.target.name;
+    if (confirmPassword != password) {
+      setError("Informe a mesma senha.");
+    } else {
+      try {
+        const response = await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.trim(),
+            password: password.trim(),
+          }),
+        });
 
-    // atualizando o valor
-    this.setState({ [name]: value });
-  }
+        const json = await response.json();
 
-  handleSubmit(event) {
-    event.preventDefault();
-  }
+        if (response.status == 201) {
+          console.log(json.message);
+        } else {
+          setError(json.message);
+        }
+      } catch (error) {
+        console.error("Erro durante a mudança de senha:", error);
+        setError(error);
+      }
+    }
+  };
 
-  render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <Editor
-          type="email"
-          label="Email"
-          hint="Informe o seu email"
-          identifier="email"
-          onChange={this.handleChange}
-          value={this.state.email}
-        />
-        <Editor
-          type="password"
-          label="Nova senha"
-          hint="Informe a sua nova senha"
-          identifier="password"
-          onChange={this.handleChange}
-          value={this.state.password}
-        />
-        <Editor
-          type="password"
-          label="Confirmar senha"
-          hint="Repita a senha informada"
-          identifier="confirmPassword"
-          onChange={this.handleChange}
-          value={this.state.confirmPassword}
-        />
+  return (
+    <form onSubmit={handleForgotPassword}>
+      {error && <ErrorCard message={error} />}
+      <Editor
+        type="email"
+        label="Email"
+        hint="Informe o seu email"
+        identifier="email"
+        onChange={(e) => setEmail(e.target.value)}
+        value={email}
+      />
+      <Editor
+        type="password"
+        label="Nova senha"
+        hint="Informe a sua nova senha"
+        identifier="password"
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+      />
+      <Editor
+        type="password"
+        label="Confirmar senha"
+        hint="Repita a senha informada"
+        identifier="confirmPassword"
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        value={confirmPassword}
+      />
 
-        <PrimaryButton label="Salvar" />
-      </form>
-    );
-  }
-}
+      <PrimaryButton label="Salvar" />
+    </form>
+  );
+};
 
 export default ForgotPasswordForm;

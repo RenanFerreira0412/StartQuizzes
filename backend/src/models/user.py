@@ -1,3 +1,4 @@
+
 class User:
     """
     classe para representar os usuários do sistema
@@ -10,3 +11,15 @@ class User:
         self.password = password
         self.is_active = is_active
         self.created_at = created_at
+
+    def toDict(self):
+        # convertendo objeto para dict
+        data = {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email,
+            "is_active": self.is_active,
+            "created_at": self.created_at.strftime("%d-%m-%Y %H:%M:%S"),
+        }
+
+        return data
